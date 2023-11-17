@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const DeleteMovieModal = () => {
   return (<div id="deleteEmployeeModal">
@@ -20,7 +20,8 @@ const DeleteMovieModal = () => {
         </form>
       </div>
     </div>
-  </div>)
+  </div>
+  )
 }
 
-export default DeleteMovieModal;
+export default DeleteMovieModal
