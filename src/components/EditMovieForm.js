@@ -1,36 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import axios from 'axios';
+import axios from 'axios'
 
 const EditMovieForm = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  let { id } = useParams()
 
   const { setMovies } = props;
   const [movie, setMovie] = useState({
-    title: "",
-    director: "",
-    genre: "",
-    metascore: 0,
-    description: ""
-  });
+   title: '',
+   director: '',
+   genre: '',
+   metascore: 0,
+   description: '',
+  })
+
+  useEffect(() => {
+   axios.get(`http://localhost:9000/api/movies/${id}`)
+   .then(res => setMovie(res.data))
+   .catch(err => console.log(err))
+  },[])
 
   const handleChange = (e) => {
     setMovie({
       ...movie,
       [e.target.name]: e.target.value
-    });
+    })
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Make your put request here
-    // On success, set the updated movies in state
-    // and also navigate the app to the updated movie path
+    e.preventDefault()
+    axios.put(`http://localhost:9000/api/movies/${id}`,movie)
+    .then(res => {
+     setMovies(res.data)
+     navigate(`../movies/${id}`)
+    })
+    .catch(err => console.log(err))
   }
 
-  const { title, director, genre, metascore, description } = movie;
+  const { title, director, genre, metascore, description } = movie
 
   return (
     <div className="col">
@@ -68,7 +78,8 @@ const EditMovieForm = (props) => {
           </div>
         </form>
       </div>
-    </div>);
+    </div>
+  )
 }
 
-export default EditMovieForm;
+export default EditMovieForm
